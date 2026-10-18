@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
 protected $fillable = [
-    'nama',
-    'nis_nim',
-    'no_hp',
-    'alamat',
-];
+ 'nama',
+ 'nis_nim',
+ 'no_hp',
+ ];
  use HasFactory;
 
  public function loans()
