@@ -1,4 +1,4 @@
-
+﻿
 <?php
 
 use App\Http\Controllers\BookController;
@@ -42,3 +42,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('books', \App\Http\Controllers\BookController::class);
+});

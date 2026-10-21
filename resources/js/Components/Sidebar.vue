@@ -10,6 +10,7 @@ import { Link } from '@inertiajs/vue3';
             <Link href="/" class="block hover:text-gray-300">Beranda</Link>
             <Link href="#" class="block hover:text-gray-300">Data Buku</Link>
             <Link href="#" class="block hover:text-gray-300">Data Anggota</Link>
+            <Link href="/books" class="block hover:text-gray-300">Data Buku</Link>
         </nav>
     </aside>
 </template>
