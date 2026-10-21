@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
@@ -12,7 +12,7 @@ const form = useForm({
 });
 
 function submit() {
-    form.post(route('books.store'));
+    form.post('/books');
 }
 </script>
 
