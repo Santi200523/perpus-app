@@ -24,21 +24,54 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kode_buku' => 'required|unique:books',
-            'judul'     => 'required|max:255',
+            'kode_buku' => 'required|unique:books,kode_buku',
+            'judul' => 'required|max:255',
             'pengarang' => 'required|max:255',
-            'penerbit'  => 'nullable|max:255',
-            'tahun'     => 'nullable|digits:4',
-            'stok'      => 'required|integer|min:0',
+            'penerbit' => 'nullable|max:255',
+            'tahun' => 'nullable|digits:4',
+            'stok' => 'required|integer|min:0',
         ]);
 
         Book::create($validated);
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan');
+        return redirect()->route('buku.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
-    public function show(Book $book) {}
-    public function edit(Book $book) {}
-    public function update(Request $request, Book $book) {}
-    public function destroy(Book $book) {}
+    public function show(Book $buku)
+    {
+        return redirect()->route('buku.index');
+    }
+
+    public function edit(Book $buku)
+    {
+        return inertia('Books/Edit', [
+            'book' => $buku,
+        ]);
+    }
+
+    public function update(Request $request, Book $buku)
+    {
+        $validated = $request->validate([
+            'kode_buku' => 'required|unique:books,kode_buku,' . $buku->id,
+            'judul' => 'required|max:255',
+            'pengarang' => 'required|max:255',
+            'penerbit' => 'nullable|max:255',
+            'tahun' => 'nullable|digits:4',
+            'stok' => 'required|integer|min:0',
+        ]);
+
+        $buku->update($validated);
+
+        return redirect()->route('buku.index')
+            ->with('success', 'Buku berhasil diperbarui.');
+    }
+
+    public function destroy(Book $buku)
+    {
+        $buku->delete();
+
+        return redirect()->route('buku.index')
+            ->with('success', 'Buku berhasil dihapus.');
+    }
 }

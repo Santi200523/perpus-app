@@ -10,49 +10,72 @@ defineProps({
 <template>
     <AuthenticatedLayout>
         <div class="p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Data Buku</h1>
-                <Link href="/books/create"
-                      class="px-4 py-2 bg-indigo-700 text-white rounded-lg hover:bg-indigo-800">
-                    + Tambah Buku
+            <h1 class="text-xl font-bold mb-4">Data Buku</h1>
+
+            <Link
+                href="/buku/create"
+                class="inline-block bg-indigo-600 text-white px-4 py-2 rounded mb-4"
+            >
+                + Tambah Buku
+            </Link>
+
+            <table class="w-full border-collapse border border-gray-300">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border p-2">Kode</th>
+                        <th class="border p-2">Judul</th>
+                        <th class="border p-2">Pengarang</th>
+                        <th class="border p-2">Stok</th>
+                        <th class="border p-2">Tahun</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr
+                        v-for="book in books.data"
+                        :key="book.id"
+                    >
+                        <td class="border p-2">
+                            {{ book.kode_buku }}
+                        </td>
+                        <td class="border p-2">
+                            {{ book.judul }}
+                        </td>
+                        <td class="border p-2">
+                            {{ book.pengarang }}
+                        </td>
+                        <td class="border p-2">
+                            {{ book.stok }}
+                        </td>
+                        <td class="border p-2">
+                            {{ book.tahun ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr v-if="books.data.length === 0">
+                        <td colspan="5" class="border p-4 text-center">
+                            Belum ada data buku.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-4 flex gap-2">
+                <Link
+                    v-if="books.prev_page_url"
+                    :href="books.prev_page_url"
+                    class="px-3 py-2 border rounded"
+                >
+                    Sebelumnya
                 </Link>
-            </div>
 
-            <div class="bg-white rounded-xl shadow overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-100 text-gray-600 text-sm">
-                        <tr>
-                            <th class="px-4 py-3">Kode</th>
-                            <th class="px-4 py-3">Judul</th>
-                            <th class="px-4 py-3">Pengarang</th>
-                            <th class="px-4 py-3">Tahun</th>
-                            <th class="px-4 py-3">Stok</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="book in books.data" :key="book.id" class="border-t">
-                            <td class="px-4 py-3">{{ book.kode_buku }}</td>
-                            <td class="px-4 py-3">{{ book.judul }}</td>
-                            <td class="px-4 py-3">{{ book.pengarang }}</td>
-                            <td class="px-4 py-3">{{ book.tahun }}</td>
-                            <td class="px-4 py-3">{{ book.stok }}</td>
-                        </tr>
-                        <tr v-if="books.data.length === 0">
-                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">
-                                Belum ada data buku.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex gap-1 mt-4">
-                <template v-for="l in books.links" :key="l.label">
-                    <Link v-if="l.url" :href="l.url" v-html="l.label"
-                          class="px-3 py-1 rounded border"
-                          :class="l.active ? 'bg-indigo-700 text-white' : 'bg-white text-gray-700'" />
-                    <span v-else v-html="l.label" class="px-3 py-1 rounded border text-gray-400"></span>
-                </template>
+                <Link
+                    v-if="books.next_page_url"
+                    :href="books.next_page_url"
+                    class="px-3 py-2 border rounded"
+                >
+                    Berikutnya
+                </Link>
             </div>
         </div>
     </AuthenticatedLayout>
