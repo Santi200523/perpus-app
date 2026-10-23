@@ -7,12 +7,23 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::latest()->paginate(10);
+        $books = Book::query()
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('kode_buku', 'like', "%{$search}%")
+                      ->orWhere('judul', 'like', "%{$search}%")
+                      ->orWhere('pengarang', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         return inertia('Books/Index', [
             'books' => $books,
+            'search' => $request->search ?? '',
         ]);
     }
 
